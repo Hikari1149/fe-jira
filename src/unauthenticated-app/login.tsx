@@ -2,32 +2,40 @@ import React, { FormEvent } from "react";
 import qs from "qs";
 import { cleanObject } from "../utils";
 import { useAuth } from "../context/auth-context";
+import { Form, Input, Button } from "antd";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 export const LoginScreen = () => {
   const { login, user, register } = useAuth();
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const username = (event.currentTarget.elements[0] as HTMLInputElement)
-      .value;
-    const password = (event.currentTarget.elements[1] as HTMLInputElement)
-      .value;
+  const handleSubmit = (values: { username: string; password: string }) => {
     // register({username,password})
-    login({ username, password });
+    login(values);
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onFinish={handleSubmit}>
       {user ? <div>login success : {user?.name}</div> : null}
-      <div>
-        <label htmlFor="username">用户名</label>
-        <input type="text" id={"username"} />
-      </div>
-      <div>
-        <label htmlFor="password">密码</label>
-        <input type="password" id={"password"} />
-      </div>
-
-      <button type={"submit"}>login</button>
-    </form>
+      <Form.Item
+        name={"username"}
+        rules={[{ required: true, message: "username is required." }]}
+      >
+        <Input placeholder={"username"} type="text" id={"username"} />
+      </Form.Item>
+      <Form.Item
+        name={"password"}
+        rules={[
+          {
+            required: true,
+            message: "password is required.",
+          },
+        ]}
+      >
+        <Input placeholder={"password"} type="password" id={"password"} />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType={"submit"} type={"primary"}>
+          login
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
