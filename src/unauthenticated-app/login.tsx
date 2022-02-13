@@ -3,6 +3,7 @@ import qs from "qs";
 import { cleanObject } from "../utils";
 import { useAuth } from "../context/auth-context";
 import { Form, Input, Button } from "antd";
+import { LongButton } from "./index";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 export const LoginScreen = () => {
@@ -32,9 +33,9 @@ export const LoginScreen = () => {
         <Input placeholder={"password"} type="password" id={"password"} />
       </Form.Item>
       <Form.Item>
-        <Button htmlType={"submit"} type={"primary"}>
+        <LongButton htmlType={"submit"} type={"primary"}>
           login
-        </Button>
+        </LongButton>
       </Form.Item>
     </Form>
   );
