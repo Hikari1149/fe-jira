@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RegisterScreen } from "./register";
 import { LoginScreen } from "./login";
-import { Button, Card, Divider } from "antd";
+import { Button, Card, Divider, Typography } from "antd";
 import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
@@ -51,6 +51,7 @@ export const LongButton = styled(Button)`
 `;
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   return (
     <Container>
@@ -58,7 +59,15 @@ export const UnauthenticatedApp = () => {
       <Background />
       <ShadowCard>
         <Title>{isRegister ? `Please login` : `Please Register`}</Title>
-        {isRegister ? <RegisterScreen /> : <LoginScreen />}
+        {error ? (
+          <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+        ) : null}
+        {isRegister ? (
+          <RegisterScreen onError={setError} />
+        ) : (
+          <LoginScreen onError={setError} />
+        )}
+
         <Divider />
         <a onClick={() => setIsRegister(!isRegister)}>
           {isRegister ? "login" : "register new account"}
