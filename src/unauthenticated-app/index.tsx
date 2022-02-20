@@ -6,7 +6,10 @@ import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
 
+import { Helmet } from "react-helmet";
+
 import styled from "@emotion/styled";
+import { useDocumentTitle } from "../utils";
 
 const Container = styled.div`
   display: flex;
@@ -52,6 +55,8 @@ export const LongButton = styled(Button)`
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  useDocumentTitle("login or register to continue");
 
   return (
     <Container>
