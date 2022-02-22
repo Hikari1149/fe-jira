@@ -14,15 +14,13 @@ import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { Helmet } from "react-helmet";
 import { useUrlQueryParam } from "../../utils/url";
+import { useProjectSearchParams } from "./util";
 
 export const ProjectListScreen = () => {
-  const [keys, _] = useState<("name" | "personId")[]>(["name", "personId"]);
-  const [param, setParam] = useUrlQueryParam(keys);
-
-  const debouncedParam = useDebounce(param, 300);
-  const { isLoading, error, data: list } = useProjects(debouncedParam);
-  const { data: users } = useUsers();
   useDocumentTitle("project list");
+  const [param, setParam] = useProjectSearchParams();
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 300));
+  const { data: users } = useUsers();
 
   return (
     <Container>
