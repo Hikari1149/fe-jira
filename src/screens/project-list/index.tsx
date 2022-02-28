@@ -19,7 +19,12 @@ import { useProjectSearchParams } from "./util";
 export const ProjectListScreen = () => {
   useDocumentTitle("project list");
   const [param, setParam] = useProjectSearchParams();
-  const { isLoading, error, data: list } = useProjects(useDebounce(param, 300));
+  const {
+    isLoading,
+    error,
+    data: list,
+    retry,
+  } = useProjects(useDebounce(param, 300));
   const { data: users } = useUsers();
 
   return (
@@ -29,7 +34,12 @@ export const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List dataSource={list || []} users={users || []} loading={isLoading} />
+      <List
+        refresh={retry}
+        dataSource={list || []}
+        users={users || []}
+        loading={isLoading}
+      />
     </Container>
   );
 };
