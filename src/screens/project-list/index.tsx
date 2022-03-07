@@ -9,14 +9,15 @@ import {
 } from "../../utils";
 import qs from "qs";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { Helmet } from "react-helmet";
 import { useUrlQueryParam } from "../../utils/url";
 import { useProjectSearchParams } from "./util";
+import { Row } from "../../components/lib";
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   useDocumentTitle("project list");
   const [param, setParam] = useProjectSearchParams();
   const {
@@ -29,12 +30,17 @@ export const ProjectListScreen = () => {
 
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        {props.projectButton}
+      </Row>
+
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
+        projectButton={props.projectButton}
         refresh={retry}
         dataSource={list || []}
         users={users || []}

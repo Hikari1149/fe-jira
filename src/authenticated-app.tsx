@@ -1,23 +1,49 @@
 import { ProjectListScreen } from "./screens/project-list";
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "./context/auth-context";
 import styled from "@emotion/styled";
-import { Row } from "./components/lib";
+import { ButtonNoPadding, Row } from "./components/lib";
 import softwareLogo from "assets/software-logo.svg";
 import { Dropdown, Menu, Button } from "antd";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "./screens/project";
 import { resetRoute } from "./utils";
+import { ProjectModal } from "./screens/project-list/project-modal";
+import { ProjectPopover } from "./components/project-popover";
 
 export const AuthenticatedApp = () => {
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
   return (
     <Container>
-      <PageHeader />
+      <PageHeader
+        projectButton={
+          <ButtonNoPadding
+            type={"link"}
+            onClick={() => setProjectModalOpen(true)}
+          >
+            创建项目
+          </ButtonNoPadding>
+        }
+      />
       <main>
         <Router>
           <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen />} />
+            <Route
+              path={"/projects"}
+              element={
+                <ProjectListScreen
+                  projectButton={
+                    <ButtonNoPadding
+                      type={"link"}
+                      onClick={() => setProjectModalOpen(true)}
+                    >
+                      创建项目
+                    </ButtonNoPadding>
+                  }
+                />
+              }
+            />
 
             <Route
               path={"/projects/:projectId/*"}
@@ -30,12 +56,34 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </main>
+      <ProjectModal
+        projectModalOpen={projectModalOpen}
+        onClose={() => setProjectModalOpen(false)}
+      />
     </Container>
   );
 };
-
-const PageHeader = () => {
+const User = () => {
   const { logout, user } = useAuth();
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+            <Button type="link" onClick={logout}>
+              Logout
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type="link" onClick={(e) => e.preventDefault()}>
+        Hi, {user?.name}
+      </Button>
+    </Dropdown>
+  );
+};
+const PageHeader = (props: { projectButton: JSX.Element }) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
@@ -43,23 +91,10 @@ const PageHeader = () => {
           <img src={softwareLogo} alt="" />
         </Button>
         <h3>Project</h3>
+        <ProjectPopover {...props} />
         <h3>User</h3>
       </HeaderLeft>
-      <Dropdown
-        overlay={
-          <Menu>
-            <Menu.Item key={"logout"}>
-              <Button type="link" onClick={logout}>
-                Logout
-              </Button>
-            </Menu.Item>
-          </Menu>
-        }
-      >
-        <Button type="link" onClick={(e) => e.preventDefault()}>
-          Hi, {user?.name}
-        </Button>
-      </Dropdown>
+      <User />
     </Header>
   );
 };
