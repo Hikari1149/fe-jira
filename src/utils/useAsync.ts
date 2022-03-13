@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { useMountedRef } from "./index";
 interface State<D> {
   error: Error | null;
@@ -15,26 +15,37 @@ const defaultState: State<null> = {
 const defaultConfig = {
   throwOnError: false,
 };
+
+const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+  const mountedRef = useMountedRef();
+
+  return (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0);
+};
 export const useAsync = <D>(
   initialState?: State<D>,
   initialConfig?: typeof defaultConfig
 ) => {
   const config = { ...defaultConfig, ...initialConfig };
-  const [state, setState] = useState<State<D>>({
-    ...defaultState,
-    ...initialState,
-  });
-  const mountedRef = useMountedRef();
+
+  const [state, dispatch] = useReducer(
+    (state: State<D>, action: Partial<State<D>>) => ({
+      ...state,
+      ...action,
+    }),
+    { ...defaultState, ...initialState }
+  );
+
+  const safeDispatch = useSafeDispatch(dispatch);
   const [retry, setRetry] = useState(() => () => {});
 
   const setData = (data: D) =>
-    setState({
+    safeDispatch({
       data,
       stat: "success",
       error: null,
     });
   const setError = (error: Error) => {
-    setState({
+    safeDispatch({
       error,
       stat: "error",
       data: null,
@@ -53,12 +64,10 @@ export const useAsync = <D>(
         run(runConfig?.retry());
       }
     });
-    setState({ ...state, stat: "loading" });
+    safeDispatch({ ...state, stat: "loading" });
     return promise
       .then((data) => {
-        if (mountedRef.current) {
-          setData(data);
-        }
+        setData(data);
         return data;
       })
       .catch((error) => {
