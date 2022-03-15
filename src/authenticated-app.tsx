@@ -13,37 +13,13 @@ import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/project-popover";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
   return (
     <Container>
-      <PageHeader
-        projectButton={
-          <ButtonNoPadding
-            type={"link"}
-            onClick={() => setProjectModalOpen(true)}
-          >
-            创建项目
-          </ButtonNoPadding>
-        }
-      />
-      <main>
-        <Router>
+      <Router>
+        <PageHeader />
+        <main>
           <Routes>
-            <Route
-              path={"/projects"}
-              element={
-                <ProjectListScreen
-                  projectButton={
-                    <ButtonNoPadding
-                      type={"link"}
-                      onClick={() => setProjectModalOpen(true)}
-                    >
-                      创建项目
-                    </ButtonNoPadding>
-                  }
-                />
-              }
-            />
+            <Route path={"/projects"} element={<ProjectListScreen />} />
 
             <Route
               path={"/projects/:projectId/*"}
@@ -54,12 +30,9 @@ export const AuthenticatedApp = () => {
               element={<Navigate to={"projects"} replace={true} />}
             />
           </Routes>
-        </Router>
-      </main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+        </main>
+        <ProjectModal />
+      </Router>
     </Container>
   );
 };
@@ -83,7 +56,7 @@ const User = () => {
     </Dropdown>
   );
 };
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
@@ -91,7 +64,7 @@ const PageHeader = (props: { projectButton: JSX.Element }) => {
           <img src={softwareLogo} alt="" />
         </Button>
         <h3>Project</h3>
-        <ProjectPopover {...props} />
+        <ProjectPopover />
         <h3>User</h3>
       </HeaderLeft>
       <User />
