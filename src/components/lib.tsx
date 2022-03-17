@@ -47,3 +47,13 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => {
 export const ButtonNoPadding = styled(Button)`
   padding: 0;
 `;
+
+//type guide
+const isError = (value: any): value is Error => value?.message;
+
+export const ErrorBox = ({ error }: { error: unknown }) => {
+  if (isError(error)) {
+    return <Typography.Text type={"danger"}>{error.message}</Typography.Text>;
+  }
+  return null;
+};

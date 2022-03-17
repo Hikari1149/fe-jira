@@ -9,6 +9,7 @@ import { loadServer, DevTools } from "jira-dev-tool";
 
 import "antd/dist/antd.less";
 import { AppProviders } from "./context";
+import { QueryClientProvider } from "react-query";
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>

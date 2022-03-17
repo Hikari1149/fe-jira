@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet";
 
 import styled from "@emotion/styled";
 import { useDocumentTitle } from "../utils";
+import { ErrorBox } from "../components/lib";
 
 const Container = styled.div`
   display: flex;
@@ -64,9 +65,7 @@ export const UnauthenticatedApp = () => {
       <Background />
       <ShadowCard>
         <Title>{isRegister ? `Please login` : `Please Register`}</Title>
-        {error ? (
-          <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-        ) : null}
+        {error ? <ErrorBox error={error} /> : null}
         {isRegister ? (
           <RegisterScreen onError={setError} />
         ) : (

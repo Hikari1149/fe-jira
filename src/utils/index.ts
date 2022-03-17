@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) =>
-  value === undefined || value === null || value === "" ? false : !value;
+  // value === undefined || value === null || value === "" ? false : !value;
+  value === undefined || value === null || value === "";
 
 export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
