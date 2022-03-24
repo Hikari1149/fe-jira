@@ -50,26 +50,29 @@ const TaskCard = ({ task }: { task: Task }) => {
     </Card>
   );
 };
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+export const KanbanColumn = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
+>(({ kanban, ...props }: { kanban: Kanban }, ref) => {
   const { data: allTasks } = useTasks(useTasksSearchParams());
   const tasks = allTasks?.filter?.((task) => task.kanbanId === kanban.id);
 
   return (
-    <Container>
+    <Container ref={ref} {...props}>
       <Row between={true}>
         <h3>{kanban.name}</h3>
         <More kanban={kanban} />
       </Row>
       <TasksContainer>
         {tasks?.map((task) => {
-          return <TaskCard task={task} />;
+          return <TaskCard task={task} key={task.id} />;
         })}
 
         <CreateTask kanbanId={kanban.id} />
       </TasksContainer>
     </Container>
   );
-};
+});
 
 const More = ({ kanban }: { kanban: Kanban }) => {
   const { mutateAsync } = useDeleteKanban(useKanbansQueryKey());
