@@ -4,7 +4,11 @@ import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
 import { Kanban } from "../types/kanban";
 import { Task } from "../types/task";
 import { useTasksQueryKey } from "../screens/Kanban/util";
-import { useAddConfig, useEditConfig } from "./use-optimistic-options";
+import {
+  useAddConfig,
+  useDeleteConfig,
+  useEditConfig,
+} from "./use-optimistic-options";
 
 export const useTasks = (param?: Partial<Task>) => {
   const client = useHttp();
@@ -42,5 +46,18 @@ export const useEditTask = (queryKey: QueryKey) => {
         data: params,
       }),
     useEditConfig(queryKey)
+  );
+};
+
+export const useDeleteTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ({ id }: { id: number }) =>
+      client(`tasks/${id}`, {
+        method: "DELETE",
+      }),
+    useDeleteConfig(queryKey)
   );
 };
