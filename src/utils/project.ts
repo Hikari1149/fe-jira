@@ -1,5 +1,4 @@
 import { useAsync } from "./useAsync";
-import { Project } from "../screens/project-list/list";
 import { useEffect } from "react";
 import { cleanObject } from "./index";
 import { useHttp } from "./http";
@@ -10,6 +9,7 @@ import {
   useDeleteConfig,
   useEditConfig,
 } from "./use-optimistic-options";
+import { Project } from "../types/project";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();

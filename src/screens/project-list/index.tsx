@@ -1,5 +1,5 @@
 import { SearchPanel } from "./search-panel";
-import { List, Project } from "./list";
+import { List } from "./list";
 import React, { useEffect, useState } from "react";
 import {
   cleanObject,
@@ -16,6 +16,7 @@ import { Helmet } from "react-helmet";
 import { useUrlQueryParam } from "../../utils/url";
 import { useProjectModal, useProjectSearchParams } from "./util";
 import { ButtonNoPadding, ErrorBox, Row } from "../../components/lib";
+import { Project } from "../../types/project";
 
 export const ProjectListScreen = () => {
   useDocumentTitle("project list");

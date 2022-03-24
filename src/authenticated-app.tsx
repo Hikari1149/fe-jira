@@ -11,13 +11,16 @@ import { ProjectScreen } from "./screens/project";
 import { resetRoute } from "./utils";
 import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/project-popover";
-
+const Main = styled.div`
+  display: flex;
+  overflow: hidden;
+`;
 export const AuthenticatedApp = () => {
   return (
     <Container>
       <Router>
         <PageHeader />
-        <main>
+        <Main>
           <Routes>
             <Route path={"/projects"} element={<ProjectListScreen />} />
 
@@ -30,7 +33,7 @@ export const AuthenticatedApp = () => {
               element={<Navigate to={"projects"} replace={true} />}
             />
           </Routes>
-        </main>
+        </Main>
         <ProjectModal />
       </Router>
     </Container>

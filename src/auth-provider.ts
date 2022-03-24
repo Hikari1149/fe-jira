@@ -1,6 +1,6 @@
-import { User } from "./screens/project-list/search-panel";
 import qs from "qs";
 import { cleanObject } from "./utils";
+import { User } from "./types/user";
 
 const localStorageKey = "__auth_provider_token_";
 
