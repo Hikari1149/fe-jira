@@ -11,6 +11,7 @@ import { ProjectScreen } from "./screens/project";
 import { resetRoute } from "./utils";
 import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/project-popover";
+import { UserPopover } from "./components/user-popover";
 const Main = styled.div`
   display: flex;
   overflow: hidden;
@@ -66,9 +67,8 @@ const PageHeader = () => {
         <Button type={"link"} onClick={resetRoute}>
           <img src={softwareLogo} alt="" />
         </Button>
-        <h3>Project</h3>
         <ProjectPopover />
-        <h3>User</h3>
+        <UserPopover />
       </HeaderLeft>
       <User />
     </Header>
