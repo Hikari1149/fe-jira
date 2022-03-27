@@ -53,7 +53,7 @@ const Title = styled.h2`
 export const LongButton = styled(Button)`
   width: 100%;
 `;
-export const UnauthenticatedApp = () => {
+export default () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 

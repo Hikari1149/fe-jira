@@ -16,7 +16,7 @@ const Main = styled.div`
   display: flex;
   overflow: hidden;
 `;
-export const AuthenticatedApp = () => {
+export default () => {
   return (
     <Container>
       <Router>
